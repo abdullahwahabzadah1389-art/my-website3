@@ -1,7 +1,0 @@
-{
-  "functions": {
-    "api/send.js": {
-      "memory": 1024
-    }
-  }
-}
