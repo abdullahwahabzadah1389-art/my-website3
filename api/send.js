@@ -12,7 +12,7 @@ export default async function handler(req, res) {
 
   try {
     await resend.emails.send({
-      from: 'Appointments <info@appointment.trusttvmounting.com>',
+      from: 'Trust TV Mounting & Home Solutions <info@appointment.trusttvmounting.com>',
       to: ['trusttvmountingservices@gmail.com', email],
       subject: `New Appointment Request - ${name || 'Customer'}`,
       html: `
