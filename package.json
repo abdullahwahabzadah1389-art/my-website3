@@ -1,0 +1,10 @@
+{
+  "name": "my-website3-backend",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "echo 'Building...'"
+  },
+  "dependencies": {
+    "resend": "^3.2.0"
+  }
+}
