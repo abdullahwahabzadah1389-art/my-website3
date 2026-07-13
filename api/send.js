@@ -1,5 +1,17 @@
 import { Resend } from 'resend';
 
+// Helper function to convert 24h time to 12h AM/PM format
+function formatTime12h(timeStr) {
+  if (!timeStr) return 'Not provided';
+  const [hoursStr, minutesStr] = timeStr.split(':');
+  let hours = parseInt(hoursStr, 10);
+  const minutes = minutesStr || '00';
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  return `${hours}:${minutes} ${ampm}`;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -9,6 +21,15 @@ export default async function handler(req, res) {
 
   const resend = new Resend(process.env.RESEND_API_KEY);
   const { name, phone, email, service, preferredDate, preferredTime, address, additionalNotes } = req.body;
+
+  const formattedTime = formatTime12h(preferredTime);
+
+  // Get current Central Time (US) for the submission timestamp
+  const submissionTimestamp = new Date().toLocaleString("en-US", {
+    timeZone: "America/Chicago",
+    dateStyle: "medium",
+    timeStyle: "short"
+  });
 
   try {
     await resend.emails.send({
@@ -27,7 +48,11 @@ export default async function handler(req, res) {
             
             <table style="width: 100%; border-collapse: collapse; margin-top: 16px;">
               <tr>
-                <td style="padding: 8px 0; font-weight: bold; width: 140px; color: #334155;">Name:</td>
+                <td style="padding: 8px 0; font-weight: bold; width: 140px; color: #334155;">Submitted On:</td>
+                <td style="padding: 8px 0; color: #64748b; font-style: italic;">${submissionTimestamp}</td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; font-weight: bold; color: #334155;">Name:</td>
                 <td style="padding: 8px 0; color: #0f172a;">${name || 'Not provided'}</td>
               </tr>
               <tr>
@@ -48,7 +73,7 @@ export default async function handler(req, res) {
               </tr>
               <tr>
                 <td style="padding: 8px 0; font-weight: bold; color: #334155;">Preferred time:</td>
-                <td style="padding: 8px 0; color: #0f172a;">${preferredTime}</td>
+                <td style="padding: 8px 0; color: #0f172a;">${formattedTime}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; font-weight: bold; color: #334155;">Address:</td>
