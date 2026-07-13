@@ -8,7 +8,7 @@
 
   <!-- This applies the circle crop to your logo -->
   <g clip-path="url(#circleView)">
-    <image href="logo.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid slice" />
+   <image href="./logo.png" x="0" y="0" width="512" height="512" preserveAspectRatio="xMidYMid slice" />
   </g>
 </svg>
 
